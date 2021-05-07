@@ -26,19 +26,21 @@ image_lst_gate4 = list(range(370,374)) + list(range(382,393)) + list(range(396,4
 image_lst_total = image_lst_gate1 + image_lst_gate2 + image_lst_gate3 + image_lst_gate4
 image_lst_specific = [410]  
 
-selected = image_lst_specific   #SELECT IMAGES you would like to see here! 
+selected = image_lst_total   #SELECT IMAGES you would like to see here! 
 no_gates = []                   #For later use - when the algorithm doesn' find a gate 
 
 #Displaying images? 
-OG_plot = True 
-CM_plot = True 
-Filter_plot = True 
-End_plot = True  
+OG_plot = False         #Plotting the original image  
+CM_plot = False         #Plotting the image after colourmask 
+Filter_plot = False     #Plotting the image after filter 
+End_plot = True         #Plotting the image with computed middle of gates 
+
 
 #%% Getting the images from folder 'WashingtonOBRace' 
-
+num = 0 
 # Running through this loop; once for every image (for analysing multiple in one run)
-for i in range(len(selected)):                   
+for i in range(len(selected)): 
+    num = num + 1                   
     image_nr = selected[i]                                               
     image_folder = "WashingtonOBRace"            
     image_prefix = '\img_'                         
@@ -111,7 +113,7 @@ for i in range(len(selected)):
 #%% Making arr - array with sums of pixels per area i,j 
 
     #Rows and columns
-    row_num = 20       # Defining how many rows in a 'mini_array' 
+    row_num = 20      # Defining how many rows in a 'mini_array' 
     col_num = 20        # Defining how many columns in a 'mini_array' 
     
     rows = np.shape(Counter_img)[0]         # Total number of pixels in row  
@@ -242,13 +244,14 @@ for i in range(len(selected)):
     else: 
         no_gates.append(image_nr)
     
-
+    
 #%% Computing runtime of the loop 
 
 stop = timeit.default_timer()
 print('')
 print('Run time: ', round(stop - start,3), 'seconds') 
 print('Done with computing!')
+print(num, 'images analysed')
 
 if len(no_gates) > 0:
     print('No gates at: ', no_gates)    
